@@ -1,11 +1,12 @@
 import { Flex } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import CurrentBalance from "../components/CurrentBalance";
 
 export default function Home(): ReactElement {
+  const [balance] = useState(0);
   return (
     <Flex>
-      <CurrentBalance />
+      <CurrentBalance balance={balance} />
     </Flex>
   );
 }
