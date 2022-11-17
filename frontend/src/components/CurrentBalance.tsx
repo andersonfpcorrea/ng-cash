@@ -19,7 +19,7 @@ export default function CurrentBalance({
   return (
     <Flex className="w-full justify-between gap-8 items-end">
       <Flex className="flex-col">
-        <Text className="font-medium text-2xll">Current Balance</Text>
+        <Text className="font-medium text-2xl">Current Balance</Text>
         <Text className="text-gray-500 text-sm">As of {today}</Text>
       </Flex>
       <Text className="font-medium text-5xl">{balance}$</Text>

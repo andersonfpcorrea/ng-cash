@@ -1,12 +1,17 @@
-import { Flex } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import { ReactElement, useState } from "react";
 import CurrentBalance from "../components/CurrentBalance";
+import Transactions from "../components/Transactions";
+import { transactions } from "../Mocks";
 
 export default function Home(): ReactElement {
-  const [balance] = useState(0);
+  const [balance] = useState(100);
+  const [user] = useState("user1");
+
   return (
-    <Flex>
+    <VStack>
       <CurrentBalance balance={balance} />
-    </Flex>
+      <Transactions transactions={transactions} user={user} />
+    </VStack>
   );
 }
