@@ -6,7 +6,7 @@ export const transactions: ITransaction[] = [
     type: "Cash-out",
     from: "user1",
     to: "user2",
-    createdAt: "16/11/2022",
+    createdAt: "2022/11/10", // must be yyyy-mm-dd
     amount: 50,
   },
   {
@@ -14,7 +14,7 @@ export const transactions: ITransaction[] = [
     type: "Cash-in",
     from: "user2",
     to: "user1",
-    createdAt: "16/11/2022",
+    createdAt: "2022/11/11",
     amount: 200,
   },
   {
@@ -22,7 +22,7 @@ export const transactions: ITransaction[] = [
     type: "Cash-in",
     from: "user3",
     to: "user1",
-    createdAt: "2022/11/16",
+    createdAt: "2022/11/12",
     amount: 150,
   },
   {
@@ -30,7 +30,7 @@ export const transactions: ITransaction[] = [
     type: "Cash-in",
     from: "user3",
     to: "user1",
-    createdAt: "2022/11/16",
+    createdAt: "2022/11/12",
     amount: 15,
   },
   {
@@ -38,7 +38,7 @@ export const transactions: ITransaction[] = [
     type: "Cash-out",
     from: "user1",
     to: "user3",
-    createdAt: "2022/11/16",
+    createdAt: "2022/11/13",
     amount: 12,
   },
 ];

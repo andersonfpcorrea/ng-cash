@@ -27,8 +27,6 @@ export default function TransferForm({
     target.type === "text"
       ? setTransferTo(target.value)
       : setAmount(Number(target.value));
-
-    console.log(amount, transferTo);
   };
 
   const isValidInput = (): boolean => {
@@ -48,7 +46,6 @@ export default function TransferForm({
       setErrorMsg(true);
     } else {
       setIsSubmitting(false);
-      console.log("success");
     }
   };
 
