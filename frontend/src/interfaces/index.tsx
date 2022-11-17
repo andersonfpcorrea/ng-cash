@@ -15,3 +15,8 @@ export interface ITransactionProps {
 export interface ITransferFormProps {
   balance: number;
 }
+
+export interface IFiltersProps {
+  list: ITransaction[];
+  setList: React.Dispatch<React.SetStateAction<ITransaction[]>>;
+}

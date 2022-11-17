@@ -22,8 +22,24 @@ export const transactions: ITransaction[] = [
     type: "Cash-in",
     from: "user3",
     to: "user1",
-    createdAt: "16/11/2022",
+    createdAt: "2022/11/16",
     amount: 150,
+  },
+  {
+    id: 4,
+    type: "Cash-in",
+    from: "user3",
+    to: "user1",
+    createdAt: "2022/11/16",
+    amount: 15,
+  },
+  {
+    id: 6,
+    type: "Cash-out",
+    from: "user1",
+    to: "user3",
+    createdAt: "2022/11/16",
+    amount: 12,
   },
 ];
 
