@@ -11,3 +11,7 @@ export interface ITransactionProps {
   transactions: ITransaction[];
   user: string;
 }
+
+export interface ITransferFormProps {
+  balance: number;
+}

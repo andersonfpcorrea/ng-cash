@@ -11,8 +11,10 @@ import { ReactElement } from "react";
 import { ITransactionProps } from "../interfaces";
 
 const typeStyles = {
-  "Cash-out": "bg-red-600 font-bold text-white italic",
-  "Cash-in": "bg-green-600 font-bold text-white italic",
+  // "Cash-out": "bg-red-500 font-bold text-white",
+  "Cash-out": "font-bold text-red-600",
+  // "Cash-in": "bg-green-500 font-bold text-white",
+  "Cash-in": "font-bold text-green-600",
 };
 
 export default function Transactions({
