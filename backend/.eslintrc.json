@@ -27,7 +27,7 @@
     "node/no-missing-import": [
       "error",
       {
-        "tryExtensions": [".ts", ".json", ".node"]
+        "tryExtensions": [".ts", ".json", ".node", ".js"]
       }
     ]
   }
