@@ -18,7 +18,11 @@
   },
   "rules": {
     "prettier/prettier": "error",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "_req|_res|_next" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
     "node/no-unsupported-features/es-syntax": "off",
     "node/no-missing-import": [
       "error",
