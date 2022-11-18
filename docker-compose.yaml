@@ -7,7 +7,7 @@ services:
     stdin_open: true
     command: bash
     # command: npm run dev  // ENTREGAR COM ESTE COMANDO
-    restart: 'no'
+    restart: always
     working_dir: /ng-cash/frontend
     volumes:
       - ./frontend:/ng-cash/frontend
@@ -27,7 +27,7 @@ services:
     stdin_open: true
     command: bash
     # command: npm run start  // ENTREGAR COM ESTE COMANDO
-    restart: 'no'
+    restart: always
     working_dir: /ng-cash/backend
     volumes:
       - ./backend:/ng-cash/backend
