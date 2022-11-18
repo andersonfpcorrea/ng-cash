@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Transactions", {
+    await queryInterface.createTable("transactions", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,24 +11,29 @@ module.exports = {
       },
       debitedAccountId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "accounts",
+          key: "id",
+        },
       },
-      creditedAccount: {
+      creditedAccountId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "accounts",
+          key: "id",
+        },
       },
       value: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, _Sequelize) {
-    await queryInterface.dropTable("Transactions");
+    await queryInterface.dropTable("transactions");
   },
 };
