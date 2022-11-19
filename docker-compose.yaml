@@ -31,7 +31,7 @@ services:
     working_dir: /ng-cash/backend
     volumes:
       - ./backend:/ng-cash/backend
-    depends_on:
+    depends_on: 
       - db
     ports:
       - 3001:3001
@@ -49,6 +49,8 @@ services:
     container_name: ngcash_db
     image: postgres
     platform: linux/x86_64
+    volumes:
+      - ./database:/var/lib/postgresql/data 
     restart: always
     ports:
       - 5432:5432

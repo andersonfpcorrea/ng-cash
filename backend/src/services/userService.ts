@@ -1,3 +1,4 @@
+import { QueryTypes } from "sequelize";
 import sequelize from "../database/models";
 import Account from "../database/models/Account";
 import User from "../database/models/User";
@@ -8,7 +9,14 @@ const createUser = async ({
   username,
   password,
 }: IValidSignupBody): Promise<ICreateUserReturn> => {
+  const isAlreadyUser = await sequelize.query("SELECT * FROM users", {
+    type: QueryTypes.SELECT,
+  });
+  // const isAlreadyUser = await User.findOne({ where: { username } });
+  console.log(isAlreadyUser);
+
   const t = await sequelize.transaction();
+
   try {
     const account = await Account.create(
       {
@@ -16,6 +24,8 @@ const createUser = async ({
       },
       { transaction: t }
     );
+    console.log(account);
+
     const user = await User.create(
       {
         username,
@@ -24,6 +34,8 @@ const createUser = async ({
       },
       { transaction: t }
     );
+    console.log(user);
+
     return {
       user: { id: user.id, username: user.username, accountId: user.accountId },
       status: statusCodes.CREATED,
