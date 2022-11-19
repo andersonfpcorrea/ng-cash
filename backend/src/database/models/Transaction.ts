@@ -16,6 +16,7 @@ Transaction.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
+      unique: true,
     },
     debitedAccountId: {
       type: INTEGER,
@@ -36,7 +37,7 @@ Transaction.init(
   },
   {
     sequelize: db,
-    modelName: "Transaction",
+    modelName: "transactions",
     timestamps: true,
     updatedAt: false,
   }
