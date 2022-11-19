@@ -4,9 +4,9 @@
     "es2021": true
   },
   "extends": [
+    "plugin:node/recommended",
     "standard-with-typescript",
     "plugin:prettier/recommended",
-    "plugin:node/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
@@ -27,7 +27,7 @@
     "node/no-missing-import": [
       "error",
       {
-        "tryExtensions": [".ts", ".json", ".node"]
+        "tryExtensions": [".ts", ".json", ".node", ".js"]
       }
     ]
   }

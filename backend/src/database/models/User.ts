@@ -16,14 +16,12 @@ User.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
+      unique: true,
     },
     username: {
       type: STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        min: 3,
-      },
     },
     password: {
       type: STRING,
@@ -39,5 +37,6 @@ User.init(
 );
 
 User.belongsTo(Account, { foreignKey: "accountId" });
+Account.hasOne(User, { foreignKey: "accountId" });
 
 export default User;

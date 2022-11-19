@@ -8,13 +8,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
+        unique: true,
       },
       username: {
         type: Sequelize.STRING,
         unique: true,
-        validate: {
-          min: 3,
-        },
       },
       password: {
         type: Sequelize.STRING,
