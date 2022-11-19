@@ -27,13 +27,19 @@ const sendCookie = (token: string, res: Response): void => {
 };
 
 const signup = async (req: Request, res: Response): Promise<void> => {
-  if (!validateSignup(req.body as ISignupBody))
-    throw new AppError("Username or password missing", statusCodes.BAD_REQUEST);
+  if (req.body === undefined)
+    throw new AppError(
+      "Please provide username and password",
+      statusCodes.BAD_REQUEST
+    );
+
+  const { fail, message } = validateSignup(req.body as ISignupBody);
+  if (fail && message !== undefined)
+    throw new AppError(message, statusCodes.BAD_REQUEST);
 
   const { user, error, status } = await userService.createUser(
     req.body as IValidSignupBody
   );
-
   if (error !== undefined) throw new AppError(error.message, status);
 
   const token = createToken(user?.id as number);
@@ -44,11 +50,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
     status: "success",
     token,
     data: {
-      user: {
-        id: user?.id,
-        username: user?.username,
-        accountId: user?.accountId,
-      },
+      user,
     },
   });
 };

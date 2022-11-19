@@ -31,7 +31,7 @@ services:
     working_dir: /ng-cash/backend
     volumes:
       - ./backend:/ng-cash/backend
-    depends_on:
+    depends_on: 
       - db
     ports:
       - 3001:3001
@@ -40,6 +40,8 @@ services:
       PORT: 3001
       NODE_ENV: 'development'
       JWT_SECRET: 'secret'
+      JWT_EXPIRES_IN: '1d'
+      JWT_COOKIE_EXPIRES_IN: '1'
     networks:
       - ngcash_net
 
@@ -47,6 +49,8 @@ services:
     container_name: ngcash_db
     image: postgres
     platform: linux/x86_64
+    volumes:
+      - ./database:/var/lib/postgresql/data 
     restart: always
     ports:
       - 5432:5432
