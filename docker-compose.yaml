@@ -8,9 +8,9 @@ services:
     command: bash
     # command: npm run dev  // ENTREGAR COM ESTE COMANDO
     restart: always
-    working_dir: /ng-cash/frontend
+    working_dir: /frontend
     volumes:
-      - ./frontend:/ng-cash/frontend
+      - ./frontend:/frontend
     depends_on:
       - backend
     ports:
@@ -28,15 +28,16 @@ services:
     command: bash
     # command: npm run start  // ENTREGAR COM ESTE COMANDO
     restart: always
-    working_dir: /ng-cash/backend
+    working_dir: /backend
     volumes:
-      - ./backend:/ng-cash/backend
+      - ./backend:/backend
     depends_on: 
       - db
     ports:
       - 3001:3001
     environment:
       POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
       PORT: 3001
       NODE_ENV: 'development'
       JWT_SECRET: 'secret'
@@ -50,12 +51,14 @@ services:
     image: postgres
     platform: linux/x86_64
     volumes:
-      - ./database:/var/lib/postgresql/data 
+      - ./data/postgres:/var/lib/postgresql/data 
     restart: always
     ports:
       - 5432:5432
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     networks:
       - ngcash_net
   

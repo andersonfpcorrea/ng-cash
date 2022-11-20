@@ -1,6 +1,6 @@
-import { QueryTypes } from "sequelize";
 import sequelize from "../database/models";
 import Account from "../database/models/Account";
+import Transaction from "../database/models/Transaction";
 import User from "../database/models/User";
 import { ICreateUserReturn, IValidSignupBody } from "../interfaces";
 import { statusCodes } from "../utils/config";
@@ -9,11 +9,22 @@ const createUser = async ({
   username,
   password,
 }: IValidSignupBody): Promise<ICreateUserReturn> => {
-  const isAlreadyUser = await sequelize.query("SELECT * FROM users", {
-    type: QueryTypes.SELECT,
+  const isAlreadyUser = await User.findOne({
+    where: { username },
+    raw: true,
   });
-  // const isAlreadyUser = await User.findOne({ where: { username } });
+  if (isAlreadyUser?.username === username)
+    return {
+      error: {
+        name: "Duplicate username not allowed",
+        message: "Username already registered",
+      },
+      status: statusCodes.BAD_REQUEST,
+    };
   console.log(isAlreadyUser);
+  console.log(JSON.parse(JSON.stringify(await User.findAll())));
+  console.log(JSON.parse(JSON.stringify(await Account.findAll())));
+  console.log(JSON.parse(JSON.stringify(await Transaction.findAll())));
 
   const t = await sequelize.transaction();
 
@@ -34,7 +45,6 @@ const createUser = async ({
       },
       { transaction: t }
     );
-    console.log(user);
 
     return {
       user: { id: user.id, username: user.username, accountId: user.accountId },

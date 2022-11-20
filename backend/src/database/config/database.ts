@@ -1,4 +1,5 @@
-import { Iconfig } from "../interfaces/index";
+// import { Options } from "sequelize";
+import { Iconfig } from "../interfaces";
 
 const config: Iconfig = {
   development: {
@@ -12,7 +13,7 @@ const config: Iconfig = {
   test: {
     username: process.env.POSTGRES_USER ?? "postgres",
     password: process.env.POSTGRES_PASSWORD ?? "postgres",
-    database: process.env.POSTGRES_DB ?? "ngcash_test",
+    database: process.env.POSTGRES_DB ?? "postgres",
     host: process.env.POSTGRES_HOST ?? "localhost",
     port: Number(process.env.POSTGRES_PORT) ?? 5432,
     dialect: "postgres",
@@ -20,7 +21,7 @@ const config: Iconfig = {
   production: {
     username: process.env.POSTGRES_USER ?? "postgres",
     password: process.env.POSTGRES_PASSWORD ?? "postgres",
-    database: process.env.POSTGRES_DB ?? "ngcash_prod",
+    database: process.env.POSTGRES_DB ?? "postgres",
     host: process.env.POSTGRES_HOST ?? "localhost",
     port: Number(process.env.POSTGRES_PORT) ?? 5432,
     dialect: "postgres",

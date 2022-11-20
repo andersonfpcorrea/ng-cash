@@ -1,6 +1,6 @@
 "use strict";
 import { Model, INTEGER } from "sequelize";
-import db from ".";
+import sequelize from ".";
 import Transaction from "./Transaction";
 
 class Account extends Model {
@@ -10,21 +10,22 @@ class Account extends Model {
 
 Account.init(
   {
-    id: {
-      type: INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
+    // id: {
+    //   type: INTEGER,
+    //   primaryKey: true,
+    //   autoIncrement: true,
+    //   allowNull: false,
+    // },
     balance: { type: INTEGER, allowNull: false },
   },
   {
-    sequelize: db,
+    sequelize,
     modelName: "accounts",
     timestamps: false,
   }
 );
+
+// Account.addHook("afterSave", () => console.log("teste 1 2 3"));
 
 Transaction.belongsTo(Account, { foreignKey: "debitedAccountId" });
 Transaction.belongsTo(Account, { foreignKey: "creditedAccountId" });

@@ -1,5 +1,5 @@
 import { Model, INTEGER, STRING } from "sequelize";
-import db from ".";
+import sequelize from ".";
 import Account from "./Account";
 
 class User extends Model {
@@ -11,13 +11,12 @@ class User extends Model {
 
 User.init(
   {
-    id: {
-      type: INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
+    // id: {
+    //   type: INTEGER,
+    //   primaryKey: true,
+    //   autoIncrement: true,
+    //   allowNull: false,
+    // },
     username: {
       type: STRING,
       allowNull: false,
@@ -27,10 +26,17 @@ User.init(
       type: STRING,
       allowNull: false,
     },
-    accountId: { type: INTEGER },
+    accountId: {
+      type: INTEGER,
+      allowNull: false,
+      references: {
+        model: "accounts",
+        key: "id",
+      },
+    },
   },
   {
-    sequelize: db,
+    sequelize,
     modelName: "users",
     timestamps: false,
   }

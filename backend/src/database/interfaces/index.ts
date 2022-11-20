@@ -1,6 +1,10 @@
 import { Options } from "sequelize";
 
-export interface Iconfig {
+interface IDictionary<TValue> {
+  [key: string]: TValue;
+}
+
+export interface Iconfig extends IDictionary<Options> {
   development: Options;
   test: Options;
   production: Options;
