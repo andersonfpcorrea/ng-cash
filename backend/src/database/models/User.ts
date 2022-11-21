@@ -1,5 +1,6 @@
 import { Model, INTEGER, STRING } from "sequelize";
 import sequelize from ".";
+import bcrypt from "bcryptjs";
 
 class User extends Model {
   declare id: number;
@@ -34,5 +35,10 @@ User.init(
     timestamps: false,
   }
 );
+
+User.beforeCreate(async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 12);
+  user.password = hashedPassword;
+});
 
 export default User;
