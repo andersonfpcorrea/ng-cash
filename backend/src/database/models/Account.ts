@@ -1,7 +1,8 @@
 "use strict";
 import { Model, INTEGER } from "sequelize";
-import db from ".";
+import sequelize from ".";
 import Transaction from "./Transaction";
+import User from "./User";
 
 class Account extends Model {
   declare id: number;
@@ -10,25 +11,33 @@ class Account extends Model {
 
 Account.init(
   {
-    id: {
-      type: INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
     balance: { type: INTEGER, allowNull: false },
   },
   {
-    sequelize: db,
+    sequelize,
     modelName: "accounts",
     timestamps: false,
   }
 );
 
-Transaction.belongsTo(Account, { foreignKey: "debitedAccountId" });
-Transaction.belongsTo(Account, { foreignKey: "creditedAccountId" });
-Account.hasMany(Transaction, { foreignKey: "debitedAccountId" });
-Account.hasMany(Transaction, { foreignKey: "creditedAccountId" });
+Transaction.belongsTo(Account, {
+  foreignKey: "debitedAccountId",
+  as: "debitedAccount",
+});
+Transaction.belongsTo(Account, {
+  foreignKey: "creditedAccountId",
+  as: "creditedAccount",
+});
+Account.hasMany(Transaction, {
+  foreignKey: "debitedAccountId",
+  as: "debitTransaction",
+});
+Account.hasMany(Transaction, {
+  foreignKey: "creditedAccountId",
+  as: "creditTransaction",
+});
+
+User.belongsTo(Account, { foreignKey: "accountId", as: "account" });
+Account.hasOne(User, { foreignKey: "accountId", as: "user" });
 
 export default Account;

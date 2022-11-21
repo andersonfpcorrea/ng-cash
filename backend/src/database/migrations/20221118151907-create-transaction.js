@@ -4,14 +4,14 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("transactions", {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
-        unique: true,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
       },
       debitedAccountId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "accounts",
           key: "id",
@@ -19,6 +19,7 @@ module.exports = {
       },
       creditedAccountId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: "accounts",
           key: "id",

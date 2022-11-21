@@ -1,5 +1,5 @@
 import { Model, INTEGER, DATE } from "sequelize";
-import db from ".";
+import sequelize from ".";
 
 class Transaction extends Model {
   declare id: number;
@@ -11,24 +11,17 @@ class Transaction extends Model {
 
 Transaction.init(
   {
-    id: {
-      type: INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
     debitedAccountId: {
       type: INTEGER,
       references: {
-        model: "Account",
+        model: "accounts",
         key: "id",
       },
     },
     creditedAccountId: {
       type: INTEGER,
       references: {
-        model: "Account",
+        model: "accounts",
         key: "id",
       },
     },
@@ -36,7 +29,7 @@ Transaction.init(
     createdAt: { type: DATE },
   },
   {
-    sequelize: db,
+    sequelize,
     modelName: "transactions",
     timestamps: true,
     updatedAt: false,

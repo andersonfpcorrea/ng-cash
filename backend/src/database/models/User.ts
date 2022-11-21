@@ -1,6 +1,5 @@
 import { Model, INTEGER, STRING } from "sequelize";
-import db from ".";
-import Account from "./Account";
+import sequelize from ".";
 
 class User extends Model {
   declare id: number;
@@ -11,13 +10,6 @@ class User extends Model {
 
 User.init(
   {
-    id: {
-      type: INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
     username: {
       type: STRING,
       allowNull: false,
@@ -27,16 +19,20 @@ User.init(
       type: STRING,
       allowNull: false,
     },
-    accountId: { type: INTEGER },
+    accountId: {
+      type: INTEGER,
+      allowNull: false,
+      references: {
+        model: "accounts",
+        key: "id",
+      },
+    },
   },
   {
-    sequelize: db,
+    sequelize,
     modelName: "users",
     timestamps: false,
   }
 );
-
-User.belongsTo(Account, { foreignKey: "accountId" });
-Account.hasOne(User, { foreignKey: "accountId" });
 
 export default User;
