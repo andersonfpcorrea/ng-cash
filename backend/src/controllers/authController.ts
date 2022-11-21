@@ -1,10 +1,14 @@
-import { Request, Response } from "express";
-import { ISignupBody, IValidSignupBody } from "../interfaces";
+import { NextFunction, Request, Response } from "express";
+import {
+  ISignupBody,
+  IValidSignupBody,
+  RequestWithCookiesAndUser,
+} from "../interfaces";
 import AppError from "../utils/AppError";
-import { statusCodes } from "../utils/config";
 import { validateSignup } from "../utils/Validator";
 import userService from "../services/userService";
 import jwt from "jsonwebtoken";
+import authService from "../services/authService";
 
 const createToken = (id: number): string =>
   jwt.sign({ id }, process.env.JWT_SECRET as string, {
@@ -72,4 +76,17 @@ const login = async (req: Request, res: Response): Promise<void> => {
   res.status(status).json({ status: message, token, data: { user } });
 };
 
-export default { signup, login };
+const protect = async (
+  req: RequestWithCookiesAndUser,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { error, status, user } = await authService.protect(req);
+  if (error !== undefined) return next(new AppError(error.message, status));
+
+  // Grant access to protected route:
+  req.user = user;
+  next();
+};
+
+export default { signup, login, protect };

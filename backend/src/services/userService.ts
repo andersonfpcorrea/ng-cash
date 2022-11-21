@@ -2,6 +2,7 @@ import sequelize from "../database/models";
 import Account from "../database/models/Account";
 import User from "../database/models/User";
 import {
+  ErrorWithNameAndMessage,
   ICreateAndAuthReturn,
   IisAlreadyUserReturn,
   IValidSignupBody,
@@ -77,7 +78,10 @@ const createUser = async ({
     return result;
   } catch (err) {
     console.log(err);
-    return { error: err as Error, status: statusCodes.INTERNAL_ERROR };
+    return {
+      error: err as ErrorWithNameAndMessage,
+      status: statusCodes.INTERNAL_ERROR,
+    };
   }
 };
 

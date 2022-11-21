@@ -1,3 +1,4 @@
+import { Request } from "express";
 import User from "../database/models/User";
 
 export interface IAppError extends Error {
@@ -25,4 +26,24 @@ export interface ICreateAndAuthReturn {
 export interface IisAlreadyUserReturn {
   user?: User;
   notInDB?: boolean;
+}
+
+export interface RequestWithCookiesAndUser extends Request {
+  cookies: { jwt?: string };
+  user?: {
+    id: number;
+    username: string;
+    accountId: number;
+  };
+}
+
+export interface CookieObj {
+  id: string;
+  iat: number;
+  exp: number;
+}
+
+export interface ErrorWithNameAndMessage extends Error {
+  message: string;
+  name: string;
 }
