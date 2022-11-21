@@ -1,16 +1,19 @@
 import isStrongPassword from "validator/lib/isStrongPassword";
-import { ISignupBody, ValidateSignupReturn } from "../interfaces";
-import { MIN_USERNAME_LENGTH } from "./config";
+import { ISignupBody } from "../interfaces";
+import AppError from "./AppError";
+import { MIN_USERNAME_LENGTH, statusCodes } from "./config";
 
-export function validateSignup(reqBody: ISignupBody): ValidateSignupReturn {
+export function validateSignup(reqBody: ISignupBody): void {
   const { username, password } = reqBody;
-  console.log(password);
 
   if (username === undefined || password === undefined)
-    return { fail: true, message: "Username or password missing" };
+    throw new AppError("Username or password missing", statusCodes.BAD_REQUEST);
 
   if (username.length < MIN_USERNAME_LENGTH)
-    return { fail: true, message: "Username must have 3 or more characters" };
+    throw new AppError(
+      "Username must have 3 or more characters",
+      statusCodes.BAD_REQUEST
+    );
 
   if (
     !isStrongPassword(password, {
@@ -22,11 +25,8 @@ export function validateSignup(reqBody: ISignupBody): ValidateSignupReturn {
       returnScore: false,
     })
   )
-    return {
-      fail: true,
-      message:
-        "Passwords must have min length of 8 characters and must contain at least one uppercase letter and on number",
-    };
-
-  return { fail: false };
+    throw new AppError(
+      "Passwords must have min length of 8 characters and must contain at least one uppercase letter and on number",
+      statusCodes.BAD_REQUEST
+    );
 }

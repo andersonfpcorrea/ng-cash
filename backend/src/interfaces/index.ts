@@ -1,3 +1,5 @@
+import User from "../database/models/User";
+
 export interface IAppError extends Error {
   statusCode: number;
   status: "fail" | "error";
@@ -13,13 +15,14 @@ export interface IValidSignupBody {
   password: string;
 }
 
-export interface ICreateUserReturn {
+export interface ICreateAndAuthReturn {
   user?: { id: number; username: string; accountId: number };
+  message?: string;
   status: number;
   error?: Error;
 }
 
-export interface ValidateSignupReturn {
-  fail: boolean;
-  message?: string;
+export interface IisAlreadyUserReturn {
+  user?: User;
+  notInDB?: boolean;
 }
