@@ -37,7 +37,7 @@ const createUser = async ({
   //     status: statusCodes.BAD_REQUEST,
   //   };
   const { user } = await isAlreadyUser(username);
-  if (user === undefined)
+  if (user !== undefined)
     return {
       error: {
         name: "Duplicate username not allowed",
