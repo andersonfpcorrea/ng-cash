@@ -1,4 +1,3 @@
-// import { Options } from "sequelize";
 import { Iconfig } from "../interfaces";
 
 const config: Iconfig = {

@@ -11,12 +11,6 @@ class Transaction extends Model {
 
 Transaction.init(
   {
-    // id: {
-    //   type: INTEGER,
-    //   primaryKey: true,
-    //   autoIncrement: true,
-    //   allowNull: false,
-    // },
     debitedAccountId: {
       type: INTEGER,
       references: {

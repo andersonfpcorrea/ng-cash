@@ -2,6 +2,7 @@
 import { Model, INTEGER } from "sequelize";
 import sequelize from ".";
 import Transaction from "./Transaction";
+import User from "./User";
 
 class Account extends Model {
   declare id: number;
@@ -10,12 +11,6 @@ class Account extends Model {
 
 Account.init(
   {
-    // id: {
-    //   type: INTEGER,
-    //   primaryKey: true,
-    //   autoIncrement: true,
-    //   allowNull: false,
-    // },
     balance: { type: INTEGER, allowNull: false },
   },
   {
@@ -25,11 +20,24 @@ Account.init(
   }
 );
 
-// Account.addHook("afterSave", () => console.log("teste 1 2 3"));
+Transaction.belongsTo(Account, {
+  foreignKey: "debitedAccountId",
+  as: "debitedAccount",
+});
+Transaction.belongsTo(Account, {
+  foreignKey: "creditedAccountId",
+  as: "creditedAccount",
+});
+Account.hasMany(Transaction, {
+  foreignKey: "debitedAccountId",
+  as: "debitTransaction",
+});
+Account.hasMany(Transaction, {
+  foreignKey: "creditedAccountId",
+  as: "creditTransaction",
+});
 
-Transaction.belongsTo(Account, { foreignKey: "debitedAccountId" });
-Transaction.belongsTo(Account, { foreignKey: "creditedAccountId" });
-Account.hasMany(Transaction, { foreignKey: "debitedAccountId" });
-Account.hasMany(Transaction, { foreignKey: "creditedAccountId" });
+User.belongsTo(Account, { foreignKey: "accountId", as: "account" });
+Account.hasOne(User, { foreignKey: "accountId", as: "user" });
 
 export default Account;
