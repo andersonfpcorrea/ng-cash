@@ -7,6 +7,11 @@ class User extends Model {
   declare username: string;
   declare password: string;
   declare accountId: number;
+
+  isCorrectPassword = async (
+    candidatePassword: string,
+    userPassword: string
+  ): Promise<boolean> => await bcrypt.compare(candidatePassword, userPassword);
 }
 
 User.init(

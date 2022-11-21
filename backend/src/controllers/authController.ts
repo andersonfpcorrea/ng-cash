@@ -1,10 +1,14 @@
-import { Request, Response } from "express";
-import { ISignupBody, IValidSignupBody } from "../interfaces";
+import { NextFunction, Request, Response } from "express";
+import {
+  ISignupBody,
+  IValidSignupBody,
+  RequestWithCookiesAndUser,
+} from "../interfaces";
 import AppError from "../utils/AppError";
-import { statusCodes } from "../utils/config";
 import { validateSignup } from "../utils/Validator";
 import userService from "../services/userService";
 import jwt from "jsonwebtoken";
+import authService from "../services/authService";
 
 const createToken = (id: number): string =>
   jwt.sign({ id }, process.env.JWT_SECRET as string, {
@@ -27,27 +31,24 @@ const sendCookie = (token: string, res: Response): void => {
 };
 
 const signup = async (req: Request, res: Response): Promise<void> => {
-  if (req.body === undefined)
-    throw new AppError(
-      "Please provide username and password",
-      statusCodes.BAD_REQUEST
-    );
+  // Check if the body object contains username and password
+  validateSignup(req.body as ISignupBody);
 
-  const { fail, message } = validateSignup(req.body as ISignupBody);
-  if (fail && message !== undefined)
-    throw new AppError(message, statusCodes.BAD_REQUEST);
-
-  const { user, error, status } = await userService.createUser(
+  // Create user
+  const { user, error, status, message } = await userService.createUser(
     req.body as IValidSignupBody
   );
   if (error !== undefined) throw new AppError(error.message, status);
 
+  // Create JWT
   const token = createToken(user?.id as number);
 
+  // Send JWT through cookie to client
   sendCookie(token, res);
 
-  res.status(statusCodes.CREATED).json({
-    status: "success",
+  // Response
+  res.status(status).json({
+    status: message,
     token,
     data: {
       user,
@@ -55,4 +56,37 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
-export default { signup };
+const login = async (req: Request, res: Response): Promise<void> => {
+  // Check if the body object contains username and password
+  validateSignup(req.body as ISignupBody);
+
+  // Check if the user exist and password is correct
+  const { error, status, message, user } = await userService.login(
+    req.body as IValidSignupBody
+  );
+  if (error !== undefined) throw new AppError(error.message, status);
+
+  // Create JWT
+  const token = createToken(user?.id as number);
+
+  // Send JWT through cookie to client
+  sendCookie(token, res);
+
+  // Response
+  res.status(status).json({ status: message, token, data: { user } });
+};
+
+const protect = async (
+  req: RequestWithCookiesAndUser,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const { error, status, user } = await authService.protect(req);
+  if (error !== undefined) return next(new AppError(error.message, status));
+
+  // Grant access to protected route:
+  req.user = user;
+  next();
+};
+
+export default { signup, login, protect };
