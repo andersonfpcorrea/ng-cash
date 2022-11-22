@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -15,10 +15,12 @@ import {
   Link,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import validator from "../utils/validator";
 import { requestSignup } from "../services/requests/auth";
+import { ISignupResponse } from "../interfaces";
+import Context from "../context/Context";
 
 export default function Signup(): ReactElement {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +29,9 @@ export default function Signup(): ReactElement {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useContext(Context);
+
+  const navigate = useNavigate();
 
   const handleInput = ({
     target,
@@ -46,8 +51,10 @@ export default function Signup(): ReactElement {
     if (usernameIsWrong) setUsernameError(messageUser);
     if (passwordIsWrong) setPasswordError(messagePassword);
     try {
-      const data = await requestSignup({ username, password });
-      console.log(data);
+      const response = await requestSignup({ username, password });
+      const userData = response.data as ISignupResponse;
+      setUser(userData.data.user);
+      navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
       console.log(err);
     }
