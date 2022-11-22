@@ -16,9 +16,9 @@ app.use("/api/v1/dashboard", dashboardRouter);
 
 app.get("/api/v1/test", async (_req, res) => {
   const result = await Transaction.create({
-    debitedAccountId: 2,
-    creditedAccountId: 1,
-    value: 10,
+    debitedAccountId: 1,
+    creditedAccountId: 3,
+    value: 15,
     createdAt: Date.now(),
   });
   res.status(200).json(result);
