@@ -27,13 +27,6 @@ export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
       ],
     },
   });
-  // const data = await sequelize.query(
-  //   'SELECT * FROM users u INNER JOIN accounts a ON u."accountId" = a.id INNER JOIN transactions t ON t."debitedAccountId" = a.id OR t."creditedAccountId" = a.id GROUP BY u.id',
-  //   {
-  //     type: QueryTypes.SELECT,
-  //   }
-  // );
-  // console.log(data);
 
   return {
     account,
