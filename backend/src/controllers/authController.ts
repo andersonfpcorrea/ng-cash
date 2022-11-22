@@ -30,7 +30,7 @@ const sendCookie = (token: string, res: Response): void => {
   res.cookie("jwt", token, cookieOptions);
 };
 
-const signup = async (req: Request, res: Response): Promise<void> => {
+export const signup = async (req: Request, res: Response): Promise<void> => {
   // Check if the body object contains username and password
   validateSignup(req.body as ISignupBody);
 
@@ -56,7 +56,7 @@ const signup = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
-const login = async (req: Request, res: Response): Promise<void> => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   // Check if the body object contains username and password
   validateSignup(req.body as ISignupBody);
 
@@ -76,9 +76,9 @@ const login = async (req: Request, res: Response): Promise<void> => {
   res.status(status).json({ status: message, token, data: { user } });
 };
 
-const protect = async (
+export const protect = async (
   req: RequestWithCookiesAndUser,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ): Promise<void> => {
   const { error, status, user } = await authService.protect(req);
@@ -86,7 +86,6 @@ const protect = async (
 
   // Grant access to protected route:
   req.user = user;
+
   next();
 };
-
-export default { signup, login, protect };

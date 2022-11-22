@@ -20,3 +20,8 @@ export interface IFiltersProps {
   list: ITransaction[];
   setList: React.Dispatch<React.SetStateAction<ITransaction[]>>;
 }
+
+export interface IUserCredentials {
+  username: string;
+  password: string;
+}

@@ -18,6 +18,7 @@ const protect = async (
     token = req.cookies.jwt;
   }
 
+  // If token is not preset, protected route is not accessed
   if (token === undefined)
     return {
       error: {
@@ -27,7 +28,7 @@ const protect = async (
       status: statusCodes.UNAUTHORIZED,
     };
 
-  // Token verification
+  // If there is a token, it is verifyed
   const decoded = jwt.verify(
     token,
     process.env.JWT_SECRET as string
@@ -44,8 +45,15 @@ const protect = async (
       status: statusCodes.UNAUTHORIZED,
     };
 
-  // Allow access to protected route:
-  return { user: currentUser, status: 1 };
+  // Return user data to be included into the request body
+  return {
+    user: {
+      id: currentUser.id,
+      username: currentUser.username,
+      accountId: currentUser.accountId,
+    },
+    status: 1,
+  };
 };
 
 export default { protect };
