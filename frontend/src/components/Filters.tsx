@@ -12,11 +12,11 @@ export default function Filters({
     let selectedDate: Date;
 
     // Handling type of movement filtering
-    if (type === "all") setList(cacheList);
-    else if (type === "Cash-in")
-      setList(cacheList.filter((el) => el.type === type));
-    else if (type === "Cash-out")
-      setList(cacheList.filter((el) => el.type === type));
+    // if (type === "all") setList(cacheList);
+    // else if (type === "Cash-in")
+    //   setList(cacheList.filter((el) => el.type === type));
+    // else if (type === "Cash-out")
+    //   setList(cacheList.filter((el) => el.type === type));
 
     // For handling date filtering
     if (typeof date === "string") {

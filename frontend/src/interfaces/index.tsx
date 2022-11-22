@@ -7,9 +7,17 @@ export interface ITransaction {
   amount: number;
 }
 
+// export interface ITransactionResponseData {
+//   id: number;
+//   debitedAccountId: number;
+//   creditedAccountId: number;
+//   value: number;
+//   createdAt: string;
+// }
+
 export interface ITransactionProps {
-  transactions: ITransaction[];
-  user: string;
+  transactions: ITransactionResponseData[];
+  user: IUserResponseData;
 }
 
 export interface ITransferFormProps {
@@ -17,8 +25,8 @@ export interface ITransferFormProps {
 }
 
 export interface IFiltersProps {
-  list: ITransaction[];
-  setList: React.Dispatch<React.SetStateAction<ITransaction[]>>;
+  list: ITransactionResponseData[];
+  setList: React.Dispatch<React.SetStateAction<ITransactionResponseData[]>>;
 }
 
 export interface IUserCredentials {

@@ -57,6 +57,7 @@ export default function Signup(): ReactElement {
       setUser(userData.data.user);
       setToken(userData.token);
       setIsLoading(false);
+      sessionStorage.setItem("token", userData.token);
       navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
       console.log(err);

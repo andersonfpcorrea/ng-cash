@@ -22,9 +22,9 @@ app.use("/api/v1/dashboard", dashboardRouter);
 
 app.get("/api/v1/test", async (_req, res) => {
   const result = await Transaction.create({
-    debitedAccountId: 1,
-    creditedAccountId: 3,
-    value: 15,
+    debitedAccountId: 12,
+    creditedAccountId: 20,
+    value: 25,
     createdAt: Date.now(),
   });
   res.status(200).json(result);
