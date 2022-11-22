@@ -8,10 +8,12 @@ class User extends Model {
   declare password: string;
   declare accountId: number;
 
-  isCorrectPassword = async (
+  static async isCorrectPassword(
     candidatePassword: string,
     userPassword: string
-  ): Promise<boolean> => await bcrypt.compare(candidatePassword, userPassword);
+  ): Promise<boolean> {
+    return await bcrypt.compare(candidatePassword, userPassword);
+  }
 }
 
 User.init(

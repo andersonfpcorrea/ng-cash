@@ -10,5 +10,5 @@ export const getData = async (
 
   const result = await dashboardService.getData(user as UserObj);
 
-  res.status(200).json({ ...result, user });
+  res.status(200).json(result);
 };

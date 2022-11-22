@@ -86,5 +86,6 @@ export const protect = async (
 
   // Grant access to protected route:
   req.user = user;
+
   next();
 };

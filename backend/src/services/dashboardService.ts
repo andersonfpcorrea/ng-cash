@@ -21,5 +21,9 @@ export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
     },
   });
 
-  return { account, transactions };
+  return {
+    account,
+    transactions,
+    user: { id: user.id, username: user.username, accountId: user.accountId },
+  };
 };

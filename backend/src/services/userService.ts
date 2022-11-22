@@ -2,7 +2,7 @@ import sequelize from "../database/models";
 import Account from "../database/models/Account";
 import User from "../database/models/User";
 import {
-  ErrorWithNameAndMessage,
+  // ErrorWithNameAndMessage,
   ICreateAndAuthReturn,
   IisAlreadyUserReturn,
   IValidSignupBody,
@@ -24,18 +24,6 @@ const createUser = async ({
   username,
   password,
 }: IValidSignupBody): Promise<ICreateAndAuthReturn> => {
-  // const isAlreadyUser = await User.findOne({
-  //   where: { username },
-  //   raw: true,
-  // });
-  // if (isAlreadyUser?.username === username)
-  //   return {
-  //     error: {
-  //       name: "Duplicate username not allowed",
-  //       message: "Username already registered",
-  //     },
-  //     status: statusCodes.BAD_REQUEST,
-  //   };
   const { user } = await isAlreadyUser(username);
   if (user !== undefined)
     return {
@@ -77,9 +65,8 @@ const createUser = async ({
     });
     return result;
   } catch (err) {
-    console.log(err);
     return {
-      error: err as ErrorWithNameAndMessage,
+      error: err as Error,
       status: statusCodes.INTERNAL_ERROR,
     };
   }
@@ -101,7 +88,7 @@ const login = async ({
     };
 
   // Check if password is correct
-  if (!(await user.isCorrectPassword(password, user.password)))
+  if (!(await User.isCorrectPassword(password, user.password)))
     return {
       error: {
         name: "Incorrect email or password",
@@ -113,7 +100,11 @@ const login = async ({
   return {
     message: "Success",
     status: statusCodes.OK,
-    user,
+    user: {
+      id: user.id,
+      username: user.username,
+      accountId: user.accountId,
+    },
   };
 };
 

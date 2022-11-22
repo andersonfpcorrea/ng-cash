@@ -47,12 +47,13 @@ export interface CookieObj {
   exp: number;
 }
 
-export interface ErrorWithNameAndMessage extends Error {
-  message: string;
-  name: string;
-}
+// export interface ErrorWithNameAndMessage extends Error {
+//   message: string;
+//   name: string;
+// }
 
 export interface IGetDataReturn {
   account: Account | null;
   transactions: Transaction[];
+  user: { id: number; username: string; accountId: number };
 }
