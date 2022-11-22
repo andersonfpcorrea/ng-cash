@@ -24,6 +24,7 @@ const createUser = async ({
   username,
   password,
 }: IValidSignupBody): Promise<ICreateAndAuthReturn> => {
+  // 1. Check if user already exist in database
   const { user } = await isAlreadyUser(username);
   if (user !== undefined)
     return {
@@ -34,6 +35,7 @@ const createUser = async ({
       status: statusCodes.BAD_REQUEST,
     };
 
+  // 2. Commence a managed transaction to create a new entry in users and accounts tables
   try {
     const result = await sequelize.transaction(async (t) => {
       const account = await Account.create(
@@ -53,6 +55,7 @@ const createUser = async ({
         { transaction: t }
       );
 
+      // 3. Return data to login user on authController
       return {
         user: {
           id: user.id,
@@ -76,7 +79,7 @@ const login = async ({
   username,
   password,
 }: IValidSignupBody): Promise<ICreateAndAuthReturn> => {
-  // Check if user is in database:
+  // 1. Check if user is in database:
   const { user } = await isAlreadyUser(username);
   if (user === undefined)
     return {
@@ -87,7 +90,7 @@ const login = async ({
       status: statusCodes.UNAUTHORIZED,
     };
 
-  // Check if password is correct
+  // 2. Check if password is correct
   if (!(await User.isCorrectPassword(password, user.password)))
     return {
       error: {
@@ -97,6 +100,7 @@ const login = async ({
       status: statusCodes.UNAUTHORIZED,
     };
 
+  // 3. Return data to login user on authController
   return {
     message: "Success",
     status: statusCodes.OK,

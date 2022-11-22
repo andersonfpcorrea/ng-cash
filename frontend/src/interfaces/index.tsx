@@ -7,14 +7,6 @@ export interface ITransaction {
   amount: number;
 }
 
-// export interface ITransactionResponseData {
-//   id: number;
-//   debitedAccountId: number;
-//   creditedAccountId: number;
-//   value: number;
-//   createdAt: string;
-// }
-
 export interface ITransactionProps {
   transactions: ITransactionResponseData[];
   accountId: number;

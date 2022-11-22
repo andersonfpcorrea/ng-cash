@@ -21,15 +21,21 @@ export default function Filters({
 
     // For handling date filtering
     if (typeof date === "string") {
+      // The built-in calender gives date values "delayed" by hours, so we need to apply this correction:
+      const twelveHours = 43200000; // This equals 12h * 60m * 60s * 1000ms
       selectedDate = new Date(date);
 
       const newList =
         list.length > 0
           ? list.filter(
-              (el) => new Date(el.createdAt).getTime() >= selectedDate.getTime()
+              (el) =>
+                new Date(el.createdAt).getTime() >=
+                selectedDate.getTime() + twelveHours
             )
           : cacheList.filter(
-              (el) => new Date(el.createdAt).getTime() >= selectedDate.getTime()
+              (el) =>
+                new Date(el.createdAt).getTime() >=
+                selectedDate.getTime() + twelveHours
             );
 
       setList(newList);

@@ -47,7 +47,17 @@ export const transferMoney = async (
   creditedAccountUsername: string,
   value: number
 ): Promise<ICommonReturnFromService> => {
-  // 1. Check if account to be credited exist:
+  // 1.Check if the credited and debited accounts are not the same:
+  if (user.username === creditedAccountUsername)
+    return {
+      error: {
+        name: "Invalid operation",
+        message: "Not allowed to make transfer to yourself",
+      },
+      status: statusCodes.BAD_REQUEST,
+    };
+
+  // 2. Check if account to be credited exist:
   const findCreditedAccount = await User.findOne({
     where: { username: creditedAccountUsername },
   });
@@ -60,7 +70,7 @@ export const transferMoney = async (
       status: statusCodes.BAD_REQUEST,
     };
 
-  // 2. Check if debited account exixst and has enougth funds:
+  // 3. Check if debited account exixst and has enougth funds:
   const account = await Account.findOne({ where: { id: user.accountId } });
   if (account === null)
     return {
@@ -80,7 +90,7 @@ export const transferMoney = async (
       status: statusCodes.BAD_REQUEST,
     };
 
-  // 3. Start a managed transaction to perform the transfer operation
+  // 4. Start a managed transaction to perform the transfer operation
   try {
     const result = await sequelize.transaction(async (t) => {
       const transaction = await Transaction.create(
@@ -106,9 +116,10 @@ export const transferMoney = async (
       return { transaction, debitedAccount, creditedAccount };
     });
     console.log(result);
-
+    // Return correct status code to dashboardController
     return { error: undefined, status: statusCodes.CREATED };
   } catch (err) {
+    // In case of failure, return error and status code accordingly
     const error = err as Error;
     return {
       error: { name: error.name, message: error.message },
