@@ -17,7 +17,7 @@ export default function NavBar({ user }: { user: string }): ReactElement {
     <>
       <Box bg={useColorModeValue("blue.400", "gray.900")} p={4} w="full">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box className="font-bold text-xl">NG.CASH</Box>
+          <Box className="font-bold text-xl">Welcome, {user}</Box>
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>

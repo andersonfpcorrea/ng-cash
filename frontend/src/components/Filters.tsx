@@ -5,6 +5,7 @@ import { IFiltersProps } from "../interfaces";
 export default function Filters({
   list,
   setList,
+  accountId,
 }: IFiltersProps): ReactElement {
   const [cacheList] = useState(list);
 
@@ -14,9 +15,9 @@ export default function Filters({
     // Handling type of movement filtering
     if (type === "all") setList(cacheList);
     else if (type === "Cash-in")
-      setList(cacheList.filter((el) => el.type === type));
+      setList(cacheList.filter((el) => el.creditedAccountId === accountId));
     else if (type === "Cash-out")
-      setList(cacheList.filter((el) => el.type === type));
+      setList(cacheList.filter((el) => el.debitedAccountId === accountId));
 
     // For handling date filtering
     if (typeof date === "string") {

@@ -17,7 +17,7 @@ const typeStyles = {
 
 export default function Transactions({
   transactions,
-  user,
+  accountId,
 }: ITransactionProps): ReactElement {
   return (
     <TableContainer className="w-full">
@@ -34,13 +34,21 @@ export default function Transactions({
         <Tbody>
           {transactions.map((el) => (
             <Tr key={el.id}>
-              <Td className={typeStyles[el.type]}>{el.type}</Td>
-              <Td>{el.from === user ? "me" : el.from}</Td>
-              <Td>{el.to === user ? "me" : el.to}</Td>
-              <Td>{el.createdAt}</Td>
-              <Td isNumeric className="text-lg font-bold">
-                {el.amount}$
+              <Td
+                className={`${
+                  el.debitedAccountId === accountId
+                    ? typeStyles["Cash-out"]
+                    : typeStyles["Cash-in"]
+                }`}
+              >
+                {el.debitedAccountId === accountId ? "Cash-out" : "Cash-in"}
               </Td>
+              <Td>{el.debitedAccountId}</Td>
+              <Td>{el.creditedAccountId}</Td>
+              <Td>
+                {Intl.DateTimeFormat("pt-BR").format(new Date(el.createdAt))}
+              </Td>
+              <Td>{el.value}$</Td>
             </Tr>
           ))}
         </Tbody>
@@ -48,3 +56,4 @@ export default function Transactions({
     </TableContainer>
   );
 }
+// !Continuar daqui: arrumar os dados "transactions"
