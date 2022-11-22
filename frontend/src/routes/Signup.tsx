@@ -29,7 +29,7 @@ export default function Signup(): ReactElement {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useContext(Context);
+  const { setUser, setToken } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -53,7 +53,10 @@ export default function Signup(): ReactElement {
     try {
       const response = await requestSignup({ username, password });
       const userData = response.data as ISignupResponse;
+      console.log(userData);
       setUser(userData.data.user);
+      setToken(userData.token);
+      setIsLoading(false);
       navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
       console.log(err);

@@ -10,6 +10,7 @@ import User from "../database/models/User";
 const protect = async (
   req: RequestWithCookiesAndUser
 ): Promise<ICreateAndAuthReturn> => {
+  console.log(req.cookies);
   // Check if token is present in the request
   let token: string | undefined;
   if (req.headers.authorization?.startsWith("Bearer") !== undefined) {
