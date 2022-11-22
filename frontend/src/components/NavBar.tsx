@@ -13,6 +13,9 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 export default function NavBar({ user }: { user: string }): ReactElement {
   const { colorMode, toggleColorMode } = useColorMode();
+  const handleLogout = (): void => {
+    sessionStorage.removeItem("token");
+  };
   return (
     <>
       <Box bg={useColorModeValue("blue.400", "gray.900")} p={4} w="full">
@@ -32,6 +35,7 @@ export default function NavBar({ user }: { user: string }): ReactElement {
                     bg: "red.400",
                   }}
                   bg={useColorModeValue("blue.400", "gray.900")}
+                  onClick={handleLogout}
                 >
                   Log-out
                 </Button>

@@ -85,7 +85,9 @@ export const protect = async (
   if (error !== undefined) return next(new AppError(error.message, status));
 
   // Grant access to protected route:
-  req.user = user;
+  if (user !== undefined) {
+    req.user = user;
+  }
 
   next();
 };

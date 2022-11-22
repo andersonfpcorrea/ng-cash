@@ -15,12 +15,12 @@ import {
   Link,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { ReactElement, useContext, useState } from "react";
+import { ReactElement, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import validator from "../utils/validator";
 import { requestSignup } from "../services/requests/auth";
-import { ISignupResponse } from "../interfaces";
-import Context from "../context/Context";
+import { IAuthErrorResponse, ISignupResponse } from "../interfaces";
+import { AxiosError } from "axios";
 
 export default function Signup(): ReactElement {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +29,6 @@ export default function Signup(): ReactElement {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser, setToken } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -53,14 +52,15 @@ export default function Signup(): ReactElement {
     try {
       const response = await requestSignup({ username, password });
       const userData = response.data as ISignupResponse;
-      console.log(userData);
-      setUser(userData.data.user);
-      setToken(userData.token);
       setIsLoading(false);
       sessionStorage.setItem("token", userData.token);
       navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as IAuthErrorResponse;
+      alert(data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 

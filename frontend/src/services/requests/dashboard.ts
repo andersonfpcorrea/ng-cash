@@ -11,3 +11,21 @@ export const requestDashboardData = async (
     },
     signal,
   });
+
+export const requestTransfer = async (
+  creditedAccountUsername: string,
+  value: number,
+  token: string
+): Promise<AxiosResponse> =>
+  await api.post(
+    "/dashboard/transfer",
+    {
+      creditedAccountUsername,
+      value,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

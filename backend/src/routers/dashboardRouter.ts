@@ -8,5 +8,6 @@ const router = Router();
 router.use(authController.protect);
 
 router.get("/", dashboardController.getData);
+router.post("/transfer", dashboardController.transferMoney);
 
 export default router;
