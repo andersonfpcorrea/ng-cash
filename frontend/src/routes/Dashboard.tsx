@@ -61,8 +61,15 @@ export default function Dashboard(): ReactElement {
       <Flex className="flex-col p-2 rounded-xl border-2 shadow-md gap-4 ">
         <CurrentBalance balance={account.balance} />
         <Flex className="flex-col border-2 rounded-xl gap-4 py-4">
-          <Filters list={transactions} setList={setTransactions} />
-          <Transactions transactions={transactions} user={user} />
+          <Filters
+            list={transactions}
+            setList={setTransactions}
+            accountId={user.accountId}
+          />
+          <Transactions
+            transactions={transactions}
+            accountId={user.accountId}
+          />
         </Flex>
         <TransferForm balance={account.balance} />
       </Flex>

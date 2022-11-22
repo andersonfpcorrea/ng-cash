@@ -17,7 +17,7 @@ export interface ITransaction {
 
 export interface ITransactionProps {
   transactions: ITransactionResponseData[];
-  user: IUserResponseData;
+  accountId: number;
 }
 
 export interface ITransferFormProps {
@@ -25,6 +25,7 @@ export interface ITransferFormProps {
 }
 
 export interface IFiltersProps {
+  accountId: number;
   list: ITransactionResponseData[];
   setList: React.Dispatch<React.SetStateAction<ITransactionResponseData[]>>;
 }

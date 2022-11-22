@@ -17,7 +17,7 @@ const typeStyles = {
 
 export default function Transactions({
   transactions,
-  user,
+  accountId,
 }: ITransactionProps): ReactElement {
   return (
     <TableContainer className="w-full">
@@ -36,14 +36,12 @@ export default function Transactions({
             <Tr key={el.id}>
               <Td
                 className={`${
-                  el.debitedAccountId === user.accountId
+                  el.debitedAccountId === accountId
                     ? typeStyles["Cash-out"]
                     : typeStyles["Cash-in"]
                 }`}
               >
-                {el.debitedAccountId === user.accountId
-                  ? "Cash-out"
-                  : "Cash-in"}
+                {el.debitedAccountId === accountId ? "Cash-out" : "Cash-in"}
               </Td>
               <Td>{el.debitedAccountId}</Td>
               <Td>{el.creditedAccountId}</Td>
