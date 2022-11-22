@@ -5,8 +5,14 @@ import userRouter from "./routers/userRouter";
 import dashboardRouter from "./routers/dashboardRouter";
 import cookieParser from "cookie-parser";
 import Transaction from "./database/models/Transaction";
+import cors from "cors";
 
 const app = express();
+
+// Allow cross-origin request:
+app.use(cors());
+// Configure resonse to OPTIONS requests:
+app.options("*", cors());
 
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
