@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -13,9 +13,45 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
+import { requestLogin } from "../services/requests/auth";
+import { IAuthErrorResponse, ISignupResponse } from "../interfaces";
+import { AxiosError } from "axios";
 
 export default function Login(): ReactElement {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInput = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>): void => {
+    const { value, type } = target;
+    type === "email" ? setUsername(value) : setPassword(value);
+  };
+
+  const handleSubmit = async ({
+    target,
+  }: React.FormEvent<HTMLButtonElement>): Promise<void> => {
+    setIsLoading(true);
+
+    try {
+      console.log(username, password);
+
+      const response = await requestLogin({ username, password });
+      const userData = response.data as ISignupResponse;
+      sessionStorage.setItem("token", userData.token);
+      navigate(`/dashboard/${userData.data.user.id}`);
+    } catch (err) {
+      const error = err as AxiosError;
+      const data = error.response?.data as IAuthErrorResponse;
+      alert(data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Flex
       minH={"100vh"}
@@ -37,13 +73,23 @@ export default function Login(): ReactElement {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
+            <FormControl id="email" isRequired>
               <FormLabel>Username</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                value={username}
+                required
+                onChange={handleInput}
+              />
             </FormControl>
-            <FormControl id="password">
+            <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input
+                type="password"
+                required
+                value={password}
+                onChange={handleInput}
+              />
             </FormControl>
             <Stack spacing={10}>
               <Stack
@@ -58,10 +104,12 @@ export default function Login(): ReactElement {
               </Stack>
               <Button
                 bg={"blue.400"}
+                isLoading={isLoading}
                 color={"white"}
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleSubmit}
               >
                 Sign in
               </Button>

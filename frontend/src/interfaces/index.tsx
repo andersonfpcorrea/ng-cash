@@ -22,6 +22,13 @@ export interface ITransactionProps {
 
 export interface ITransferFormProps {
   balance: number;
+  setters: {
+    setAccount: React.Dispatch<React.SetStateAction<IAccountResponseData>>;
+    setUser: React.Dispatch<React.SetStateAction<IUserResponseData>>;
+    setTransactions: React.Dispatch<
+      React.SetStateAction<ITransactionResponseData[]>
+    >;
+  };
 }
 
 export interface IFiltersProps {
@@ -92,4 +99,9 @@ export interface ISignupResponse {
   data: {
     user: IUserResponseData;
   };
+}
+
+export interface IAuthErrorResponse {
+  error: { statusCode: number; status: string };
+  message: string;
 }

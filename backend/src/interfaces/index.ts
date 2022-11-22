@@ -18,11 +18,14 @@ export interface IValidSignupBody {
   password: string;
 }
 
-export interface ICreateAndAuthReturn {
-  user?: { id: number; username: string; accountId: number };
+export interface ICommonReturnFromService {
   message?: string;
   status: number;
   error?: Error;
+}
+
+export interface ICreateAndAuthReturn extends ICommonReturnFromService {
+  user?: { id: number; username: string; accountId: number };
 }
 
 export interface IisAlreadyUserReturn {
@@ -39,6 +42,13 @@ export interface UserObj {
 export interface RequestWithCookiesAndUser extends Request {
   cookies: { jwt?: string };
   user?: UserObj;
+}
+
+export interface RequestForTransfers extends RequestWithCookiesAndUser {
+  body: {
+    creditedAccountUsername: string;
+    value: number;
+  };
 }
 
 export interface CookieObj {

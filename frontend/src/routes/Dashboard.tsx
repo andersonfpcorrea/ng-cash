@@ -71,7 +71,10 @@ export default function Dashboard(): ReactElement {
             accountId={user.accountId}
           />
         </Flex>
-        <TransferForm balance={account.balance} />
+        <TransferForm
+          balance={account.balance}
+          setters={{ setAccount, setTransactions, setUser }}
+        />
       </Flex>
     </VStack>
   );
