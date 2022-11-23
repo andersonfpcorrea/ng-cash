@@ -3,6 +3,9 @@ import { ISignupBody } from "../interfaces";
 import AppError from "./AppError";
 import { MIN_USERNAME_LENGTH, statusCodes } from "./config";
 
+/**
+ * @comments Utility function to validate auth data in login/signup requests
+ */
 export function validateSignup(reqBody: ISignupBody): void {
   const { username, password } = reqBody;
 

@@ -5,17 +5,20 @@ import User from "../database/models/User";
 import {
   ICommonReturnFromService,
   IGetDataReturn,
+  TransactionWithAssociations,
   UserObj,
 } from "../interfaces";
 import { statusCodes } from "../utils/config";
 import sequelize from "../database/models";
 
 export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
+  // 1. Find user account details
   const account = await Account.findOne({
     where: { id: user.accountId },
   });
 
-  const transactions = await Transaction.findAll({
+  // 2. Find user transactions details
+  const transactions = (await Transaction.findAll({
     where: {
       [Op.or]: [
         {
@@ -26,8 +29,23 @@ export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
         },
       ],
     },
-  });
+    include: [
+      {
+        model: Account,
+        attributes: ["id"],
+        as: "debitedAccount",
+        include: [{ model: User, as: "user", attributes: ["username"] }],
+      },
+      {
+        model: Account,
+        attributes: ["id"],
+        as: "creditedAccount",
+        include: [{ model: User, as: "user", attributes: ["username"] }],
+      },
+    ],
+  })) as TransactionWithAssociations[];
 
+  // 3. Return data to controller
   return {
     account,
     transactions,
@@ -85,8 +103,8 @@ export const transferMoney = async (
 
   // 4. Start a managed transaction to perform the transfer operation
   try {
-    const result = await sequelize.transaction(async (t) => {
-      const transaction = await Transaction.create(
+    await sequelize.transaction(async (t) => {
+      await Transaction.create(
         {
           debitedAccountId: user.accountId,
           creditedAccountId: findCreditedAccount.accountId,
@@ -96,19 +114,16 @@ export const transferMoney = async (
         { transaction: t }
       );
 
-      const debitedAccount = await Account.decrement(
+      await Account.decrement(
         { balance: value },
         { where: { id: user.accountId }, transaction: t }
       );
 
-      const creditedAccount = await Account.increment(
+      await Account.increment(
         { balance: value },
         { where: { id: findCreditedAccount.accountId }, transaction: t }
       );
-
-      return { transaction, debitedAccount, creditedAccount };
     });
-    console.log(result);
     // Return correct status code to dashboardController
     return { error: undefined, status: statusCodes.CREATED };
   } catch (err) {

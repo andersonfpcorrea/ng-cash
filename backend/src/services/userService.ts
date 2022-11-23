@@ -2,7 +2,6 @@ import sequelize from "../database/models";
 import Account from "../database/models/Account";
 import User from "../database/models/User";
 import {
-  // ErrorWithNameAndMessage,
   ICreateAndAuthReturn,
   IisAlreadyUserReturn,
   IValidSignupBody,
@@ -17,6 +16,7 @@ const isAlreadyUser = async (
     raw: true,
   });
 
+  // Check if a username is in data. If so, return the user data; if not return undefined
   return user?.username === username ? { user } : { user: undefined };
 };
 
@@ -35,7 +35,7 @@ const createUser = async ({
       status: statusCodes.BAD_REQUEST,
     };
 
-  // 2. Commence a managed transaction to create a new entry in users and accounts tables
+  // 2. Commence a managed transaction to create a new entry in "users" and "accounts" tables
   try {
     const result = await sequelize.transaction(async (t) => {
       const account = await Account.create(

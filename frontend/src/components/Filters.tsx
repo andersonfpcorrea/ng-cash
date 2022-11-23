@@ -10,8 +10,6 @@ export default function Filters({
   const [cacheList] = useState(list);
 
   const handleFilters = (type: string, date?: string): void => {
-    let selectedDate: Date;
-
     // Handling type of movement filtering
     if (type === "all") setList(cacheList);
     else if (type === "Cash-in")
@@ -23,7 +21,7 @@ export default function Filters({
     if (typeof date === "string") {
       // The built-in calender gives date values "delayed" by hours, so we need to apply this correction:
       const twelveHours = 43200000; // This equals 12h * 60m * 60s * 1000ms
-      selectedDate = new Date(date);
+      const selectedDate = new Date(date);
 
       const newList =
         list.length > 0

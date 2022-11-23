@@ -1,3 +1,6 @@
+/**
+ * @comment Custom Error class for global error handling in the app
+ */
 export default class AppError extends Error {
   statusCode: number;
   status: string;

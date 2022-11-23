@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ToBeDeveloped(): ReactElement {
   const [timer, setTimer] = useState(5);
-  const [intervalID, setIntervalID] = useState(0);
+  const [intervalID, setIntervalID] = useState<NodeJS.Timer | number>(0);
 
   const navigate = useNavigate();
 

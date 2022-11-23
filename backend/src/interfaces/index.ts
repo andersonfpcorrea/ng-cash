@@ -57,13 +57,13 @@ export interface CookieObj {
   exp: number;
 }
 
-// export interface ErrorWithNameAndMessage extends Error {
-//   message: string;
-//   name: string;
-// }
+export interface TransactionWithAssociations extends Transaction {
+  debitedAccount: { id: number; user: { username: string } };
+  creditedAccount: { id: number; user: { username: string } };
+}
 
 export interface IGetDataReturn {
   account: Account | null;
-  transactions: Transaction[];
+  transactions: TransactionWithAssociations[];
   user: { id: number; username: string; accountId: number };
 }

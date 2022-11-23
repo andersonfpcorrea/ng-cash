@@ -1,12 +1,3 @@
-export interface ITransaction {
-  id: number;
-  type: "Cash-in" | "Cash-out";
-  from: string;
-  to: string;
-  createdAt: string;
-  amount: number;
-}
-
 export interface ITransactionProps {
   transactions: ITransactionResponseData[];
   accountId: number;
@@ -58,31 +49,14 @@ export interface ITransactionResponseData {
   creditedAccountId: number;
   value: number;
   createdAt: string;
+  debitedAccount: { id: number; user: { username: string } };
+  creditedAccount: { id: number; user: { username: string } };
 }
 
 export interface IDashboardResponseData {
   account: IAccountResponseData;
   transactions: ITransactionResponseData[];
   user: IUserResponseData;
-}
-
-export interface Store {
-  user: IUserResponseData;
-  setUser: React.Dispatch<
-    React.SetStateAction<{
-      id: number;
-      username: string;
-      accountId: number;
-    }>
-  >;
-  token: string;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
-  account: IAccountResponseData;
-  setAccount: React.Dispatch<React.SetStateAction<IAccountResponseData>>;
-  transactions: ITransactionResponseData[];
-  setTransactions: React.Dispatch<
-    React.SetStateAction<ITransactionResponseData[]>
-  >;
 }
 
 export interface ISignupResponse {

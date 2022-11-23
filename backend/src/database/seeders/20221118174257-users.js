@@ -5,23 +5,27 @@ module.exports = {
   async up(queryInterface, _Sequelize) {
     return queryInterface.bulkInsert("users", [
       {
-        username: "Matthew",
-        password: "123456", // Hash the passwords
+        username: "John",
+        password:
+          "$2a$12$Ny1jsng2pAHp5p4.my0b9O8FAljpSRnyMevZmSmp8M.WXlXrxc8Ia",
         accountId: 1,
       },
       {
-        username: "Mark",
-        password: "123456", // Hash the passwords
+        username: "Luke",
+        password:
+          "$2a$12$6rQtcmGD9SkiMaE/wX/yQOc9iqeOIREWgAhSoQFH08J5oH8GEaf8.",
         accountId: 2,
       },
       {
-        username: "Luke",
-        password: "123456", // Hash the passwords
+        username: "Mark",
+        password:
+          "$2a$12$xSqDXCuJct.XedX4P7npOuFTRKwm.l5d.VShyHiBYnVCksu7RIAU6",
         accountId: 3,
       },
       {
-        username: "John",
-        password: "123456", // Hash the passwords
+        username: "Matthew",
+        password:
+          "$2a$12$85vQx0EvYLBDpNaOwLOVcOtIIx0d/SgW4beRcdhZDpX18lV5gqYdi",
         accountId: 4,
       },
     ]);
