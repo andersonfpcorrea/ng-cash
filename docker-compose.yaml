@@ -6,7 +6,7 @@ services:
     tty: true
     stdin_open: true
     # command: bash
-    command: npm run dev
+    command: bash -c "npm i && npm run dev"
     restart: always
     working_dir: /frontend
     volumes:
@@ -24,7 +24,7 @@ services:
     tty: true
     stdin_open: true
     # command: bash
-    command: bash -c "npm ci && npx -y tsc && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm run dev"
+    command: bash -c "npm i && npx -y tsc && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm run dev"
     restart: always
     working_dir: /backend
     volumes:
