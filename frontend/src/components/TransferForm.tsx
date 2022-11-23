@@ -49,7 +49,7 @@ export default function TransferForm({
     target,
   }: React.FormEvent<HTMLButtonElement>): Promise<void> => {
     setIsSubmitting(true);
-    // If one of the inputs are invalid the data is not submited
+    // If one of the inputs is invalid the data is not submited
     if (!isValidInput()) {
       setIsSubmitting(false);
       return setErrorMsg(true);
@@ -59,12 +59,10 @@ export default function TransferForm({
     try {
       const result = await requestTransfer(transferTo, amount, token);
       const data = result.data as IDashboardResponseData;
-      // The api return updated user data, that is feed into the dashboard state
+      // The api returns updated user data, which is injected into the dashboard state
       setAccount(data.account);
       setTransactions(data.transactions);
       setUser(data.user);
-      setIsSubmitting(false);
-      console.log(result);
     } catch (err) {
       // In case of fail, an alert window show the error to the user
       const error = err as AxiosError;

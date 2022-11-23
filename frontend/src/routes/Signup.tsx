@@ -35,6 +35,7 @@ export default function Signup(): ReactElement {
   const handleInput = ({
     target,
   }: React.ChangeEvent<HTMLInputElement>): void => {
+    // Upon writing into the inputs the input validation error messages are hidden
     setUsernameError("");
     setPasswordError("");
     const { value, type } = target;
@@ -44,18 +45,23 @@ export default function Signup(): ReactElement {
   const handleSubmit = async ({
     target,
   }: React.FormEvent<HTMLButtonElement>): Promise<void> => {
+    // 1. Activate the loading spinner
     setIsLoading(true);
+    // 2. Validate inputs
     const { usernameIsWrong, passwordIsWrong, messageUser, messagePassword } =
       validator.validateUserData({ username, password });
     if (usernameIsWrong) setUsernameError(messageUser);
     if (passwordIsWrong) setPasswordError(messagePassword);
+    // 3. If all inputs are correct, it is made a POST request to the api
     try {
       const response = await requestSignup({ username, password });
       const userData = response.data as ISignupResponse;
       setIsLoading(false);
+      // The tolken is stored in the session storage and the user is redirected to the dashboard page
       sessionStorage.setItem("token", userData.token);
       navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
+      // In case of failure, the user sees the error message on an alert window
       const error = err as AxiosError;
       const data = error.response?.data as IAuthErrorResponse;
       alert(data.message);
@@ -74,10 +80,10 @@ export default function Signup(): ReactElement {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+            Sign up now
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool features ✌️
+            and start enjoying your account 💰
           </Text>
         </Stack>
         <Box

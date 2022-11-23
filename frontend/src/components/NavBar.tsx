@@ -20,14 +20,14 @@ export default function NavBar({ user }: { user: string }): ReactElement {
     <>
       <Box bg={useColorModeValue("blue.400", "gray.900")} p={4} w="full">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box className="font-bold text-xl">Welcome, {user}</Box>
+          <Box className="font-bold text-2xl text-white">Welcome, {user}</Box>
 
           <Flex alignItems={"center"}>
             <Stack direction={"row"} spacing={7}>
               <Button onClick={toggleColorMode}>
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
-              <Link as={RouterLink} to={"/"}>
+              <Link as={RouterLink} to={"/login"}>
                 <Button
                   aria-label="logout"
                   color={"white"}

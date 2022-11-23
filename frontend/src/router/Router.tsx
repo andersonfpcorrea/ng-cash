@@ -17,14 +17,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "tbd",
-        element: <ToBeDeveloped />,
-      },
-      {
         path: "dashboard/:id",
         element: <Dashboard />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ToBeDeveloped />,
   },
 ]);
 

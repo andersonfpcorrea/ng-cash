@@ -8,8 +8,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
-import { ITransactionProps } from "../interfaces";
+import { ITransactionProps, ITransactionResponseData } from "../interfaces";
 
+// Tailwind classes for "type" table data elements
 const typeStyles = {
   "Cash-out": "font-bold text-red-600",
   "Cash-in": "font-bold text-green-600",
@@ -19,6 +20,14 @@ export default function Transactions({
   transactions,
   accountId,
 }: ITransactionProps): ReactElement {
+  // To make sure the transactions appear in order of creation, we sorte the list by date
+  const sortListByDate = (
+    list: ITransactionResponseData[]
+  ): ITransactionResponseData[] =>
+    list.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
   return (
     <TableContainer className="w-full">
       <Table>
@@ -32,7 +41,7 @@ export default function Transactions({
           </Tr>
         </Thead>
         <Tbody>
-          {transactions.map((el) => (
+          {sortListByDate(transactions).map((el) => (
             <Tr key={el.id}>
               <Td
                 className={`${
@@ -43,8 +52,8 @@ export default function Transactions({
               >
                 {el.debitedAccountId === accountId ? "Cash-out" : "Cash-in"}
               </Td>
-              <Td>{el.debitedAccountId}</Td>
-              <Td>{el.creditedAccountId}</Td>
+              <Td>{el.debitedAccount.user.username}</Td>
+              <Td>{el.creditedAccount.user.username}</Td>
               <Td>
                 {Intl.DateTimeFormat("pt-BR").format(new Date(el.createdAt))}
               </Td>
@@ -56,4 +65,3 @@ export default function Transactions({
     </TableContainer>
   );
 }
-// !Continuar daqui: arrumar os dados "transactions"

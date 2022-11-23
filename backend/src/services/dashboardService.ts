@@ -5,17 +5,20 @@ import User from "../database/models/User";
 import {
   ICommonReturnFromService,
   IGetDataReturn,
+  TransactionWithAssociations,
   UserObj,
 } from "../interfaces";
 import { statusCodes } from "../utils/config";
 import sequelize from "../database/models";
 
 export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
+  // 1. Find user account details
   const account = await Account.findOne({
     where: { id: user.accountId },
   });
 
-  const transactions = await Transaction.findAll({
+  // 2. Find user transactions details
+  const transactions = (await Transaction.findAll({
     where: {
       [Op.or]: [
         {
@@ -26,15 +29,23 @@ export const getData = async (user: UserObj): Promise<IGetDataReturn> => {
         },
       ],
     },
-  });
-  // const data = await sequelize.query(
-  //   'SELECT * FROM users u INNER JOIN accounts a ON u."accountId" = a.id INNER JOIN transactions t ON t."debitedAccountId" = a.id OR t."creditedAccountId" = a.id GROUP BY u.id',
-  //   {
-  //     type: QueryTypes.SELECT,
-  //   }
-  // );
-  // console.log(data);
+    include: [
+      {
+        model: Account,
+        attributes: ["id"],
+        as: "debitedAccount",
+        include: [{ model: User, as: "user", attributes: ["username"] }],
+      },
+      {
+        model: Account,
+        attributes: ["id"],
+        as: "creditedAccount",
+        include: [{ model: User, as: "user", attributes: ["username"] }],
+      },
+    ],
+  })) as TransactionWithAssociations[];
 
+  // 3. Return data to controller
   return {
     account,
     transactions,
@@ -47,7 +58,17 @@ export const transferMoney = async (
   creditedAccountUsername: string,
   value: number
 ): Promise<ICommonReturnFromService> => {
-  // 1. Check if account to be credited exist:
+  // 1.Check if the credited and debited accounts are not the same:
+  if (user.username === creditedAccountUsername)
+    return {
+      error: {
+        name: "Invalid operation",
+        message: "Not allowed to make transfer to yourself",
+      },
+      status: statusCodes.BAD_REQUEST,
+    };
+
+  // 2. Check if account to be credited exist:
   const findCreditedAccount = await User.findOne({
     where: { username: creditedAccountUsername },
   });
@@ -60,7 +81,7 @@ export const transferMoney = async (
       status: statusCodes.BAD_REQUEST,
     };
 
-  // 2. Check if debited account exixst and has enougth funds:
+  // 3. Check if debited account exixst and has enougth funds:
   const account = await Account.findOne({ where: { id: user.accountId } });
   if (account === null)
     return {
@@ -80,10 +101,10 @@ export const transferMoney = async (
       status: statusCodes.BAD_REQUEST,
     };
 
-  // 3. Start a managed transaction to perform the transfer operation
+  // 4. Start a managed transaction to perform the transfer operation
   try {
-    const result = await sequelize.transaction(async (t) => {
-      const transaction = await Transaction.create(
+    await sequelize.transaction(async (t) => {
+      await Transaction.create(
         {
           debitedAccountId: user.accountId,
           creditedAccountId: findCreditedAccount.accountId,
@@ -93,22 +114,20 @@ export const transferMoney = async (
         { transaction: t }
       );
 
-      const debitedAccount = await Account.decrement(
+      await Account.decrement(
         { balance: value },
         { where: { id: user.accountId }, transaction: t }
       );
 
-      const creditedAccount = await Account.increment(
+      await Account.increment(
         { balance: value },
         { where: { id: findCreditedAccount.accountId }, transaction: t }
       );
-
-      return { transaction, debitedAccount, creditedAccount };
     });
-    console.log(result);
-
+    // Return correct status code to dashboardController
     return { error: undefined, status: statusCodes.CREATED };
   } catch (err) {
+    // In case of failure, return error and status code accordingly
     const error = err as Error;
     return {
       error: { name: error.name, message: error.message },

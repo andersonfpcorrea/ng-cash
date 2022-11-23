@@ -34,17 +34,19 @@ export default function Login(): ReactElement {
   const handleSubmit = async ({
     target,
   }: React.FormEvent<HTMLButtonElement>): Promise<void> => {
+    // 1. Set the loading spinner to show
     setIsLoading(true);
 
     try {
-      console.log(username, password);
-
+      // 2. Make a POST request to the API
       const response = await requestLogin({ username, password });
       const userData = response.data as ISignupResponse;
+      // 3. Store the token in session storage and redirect to dashboard page
       sessionStorage.setItem("token", userData.token);
       navigate(`/dashboard/${userData.data.user.id}`);
     } catch (err) {
       const error = err as AxiosError;
+      // If there is an error, an alert shows the error message
       const data = error.response?.data as IAuthErrorResponse;
       alert(data.message);
     } finally {
@@ -61,9 +63,9 @@ export default function Login(): ReactElement {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"4xl"}>Log in to your account</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+            and start making transfers 💸
           </Text>
         </Stack>
         <Box
@@ -113,6 +115,14 @@ export default function Login(): ReactElement {
               >
                 Sign in
               </Button>
+            </Stack>
+            <Stack pt={6}>
+              <Text align={"center"}>
+                Not yet a user?{" "}
+                <Link color={"blue.400"} as={RouterLink} to="/">
+                  Sign up
+                </Link>
+              </Text>
             </Stack>
           </Stack>
         </Box>
