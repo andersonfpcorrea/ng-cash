@@ -5,7 +5,6 @@ services:
     container_name: ngcash_front
     tty: true
     stdin_open: true
-    # command: bash
     command: bash -c "npm i && npm run dev"
     restart: always
     working_dir: /frontend
@@ -23,13 +22,12 @@ services:
     container_name: ngcash_back
     tty: true
     stdin_open: true
-    # command: bash
     command: bash -c "npm i && npx -y tsc && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm run dev"
     restart: always
     working_dir: /backend
     volumes:
       - ./backend:/backend
-    depends_on: 
+    depends_on:
       - db
     ports:
       - 3001:3001
@@ -59,7 +57,7 @@ services:
       POSTGRES_DB: postgres
     networks:
       - ngcash_net
-  
+
 networks:
   ngcash_net:
     driver: bridge
