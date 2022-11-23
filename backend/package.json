@@ -7,7 +7,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "prestart": "npx -y tsc && npx sequelize-cli db:migrate",
+    "prestart": "npx -y tsc && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "start": "npm run build && node ./build/src/server.js",
     "dev": "tsnd ./src/server.ts",
     "build": "tsc",
