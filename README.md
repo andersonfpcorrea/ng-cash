@@ -43,7 +43,7 @@ docker-compose down
 
 ## Acessando o app
 
-A partir daqui você se cadastrar para acessar o app, ou ir para a página de [login](http://localhost:5173/login) e usar umas das contas pre-salvas no banco de dados:
+A partir daqui você pode se cadastrar para acessar o app, ou ir para a página de [login](http://localhost:5173/login) e usar umas das contas pre-salvas no banco de dados:
 
 | User    | Password  |
 | ------- | :-------: |
