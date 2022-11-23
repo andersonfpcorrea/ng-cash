@@ -1,0 +1,65 @@
+version: '3'
+services:
+  frontend:
+    image: node:18
+    container_name: ngcash_front
+    tty: true
+    stdin_open: true
+    # command: bash
+    command: npm run dev
+    restart: always
+    working_dir: /frontend
+    volumes:
+      - ./frontend:/frontend
+    depends_on:
+      - backend
+    ports:
+      - 5173:5173
+    networks:
+      - ngcash_net
+
+  backend:
+    image: node:18
+    container_name: ngcash_back
+    tty: true
+    stdin_open: true
+    # command: bash
+    command: bash -c "npm ci && npx -y tsc && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && npm run dev"
+    restart: always
+    working_dir: /backend
+    volumes:
+      - ./backend:/backend
+    depends_on: 
+      - db
+    ports:
+      - 3001:3001
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      PORT: 3001
+      NODE_ENV: 'development'
+      JWT_SECRET: 'secret'
+      JWT_EXPIRES_IN: '1d'
+      JWT_COOKIE_EXPIRES_IN: '1'
+    networks:
+      - ngcash_net
+
+  db:
+    container_name: ngcash_db
+    image: postgres
+    platform: linux/x86_64
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - ngcash_net
+  
+networks:
+  ngcash_net:
+    driver: bridge
