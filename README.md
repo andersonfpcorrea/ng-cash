@@ -33,6 +33,14 @@ docker-compose up -d
 
    ![Signup](./signup.png)
 
+   </br>
+
+5. Para interromper a execução do app:
+
+```
+docker-compose down
+```
+
 ## Acessando o app
 
 A partir daqui você se cadastrar para acessar o app, ou ir para a página de [login](http://localhost:5173/login) e usar umas das contas pre-salvas no banco de dados:
