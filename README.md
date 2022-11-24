@@ -1,5 +1,12 @@
 # NG Cash
 
+
+
+https://user-images.githubusercontent.com/92505216/203709465-ba15281b-4adf-486d-9bb3-247a5874dd3e.mp4
+
+
+
+
 Uma aplicaçao web **fullstack dockerizada** cujo objetivo é possibilitar transferências bancárias entre usuários do banco **_NG Cash_**
 
 ## Pre-requisitos para rodar este projeto:
