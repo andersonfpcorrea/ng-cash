@@ -1,4 +1,4 @@
-# Bank App
+# Banking App
 
 
 
